@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>Hello APP</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css" />
+    <link rel="stylesheet" type="text/css" href="./css/common.css" />
+    <style>
+      *{
+       outline:none;
+      }
+      #header {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: flex;   
+            background:#F8F8F8;  
+            color:rgba(0,0,255,.8);       
+        }
+       #header a{
+            display: block;
+            background-size: 30px;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 20px;
+           /* font-size: 1em;*/
+            
+        }
+        .title {
+            line-height:40px;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            flex: 1;
+            text-align: center;
+            font-size:1.2em;
+            color:rgba(0,125,255,.8);
+            
+        }
+      #header .menu {
+            background-image: url("./image/menu.png") ;
+        }
+        
+        #find{
+          /*overflow: hidden;*/
+         position: relative;
+        }
+        #main{
+         padding-top:0;
+         padding-left:0;
+         padding-right:0;
+        }
+        #find{
+         border-bottom:1px solid #F0F0F0;
+        }
+        #find span{
+		 display:block;
+		 position:absolute;
+		 width: 10%;
+		 background:url("./image/search.png") no-repeat;
+		 background-position:right top;
+		 background-size:28px 28px;
+		 top:8px;
+		 right:5px;
+		 z-index: 100;
+		 height: 32px;
+		}
+		input[type="text"]{
+		  line-height: 32px;
+		  width:100%;
+		/*  outline: none;*/
+		 /* margin-top:1px;*/
+		  padding:5px 0;
+		  background:#FFFFFF;
+		 
+		  z-index: -1;
+		  border:none;
+		  
+		}
+		#select{
+		 width:100%;
+		}
+		.col{
+		 display:inline-block;
+		 width:32%;
+		 text-align: center;
+		
+		}
+		.cars{
+		
+		 outline:none;
+		 border: none;
+		 /*margin-left:35%;*/
+		 
+		}
+    </style>
+</head>
+<body>
+    <div id="wrap">
+         <div id="header">
+            <a class="menu" tapmode="" onclick="closeme()"></a>
+            <div class="title" >
+                                          安利店铺
+            </div>
+            <a></a>            
+        </div>
+        <div id="main">
+             <div id="find">
+		     <input type="text" id="dpname" list="" placeholder="海淀区"/> <span onclick="findbykeyword()" tapmode></span>
+		     <datalist id="dslist">
+		       <option label="" value="海淀区">
+		       <option label="" value="朝阳区">
+		       <option label="" value="昌平区">
+		        <option label="" value="宣武区">
+		       <option label="" value="丰台区">
+		       <option label="" value="房山区">
+		       <option label="" value="通州区">
+		       <option label="" value="密云区">
+		     </datalist>
+		    </div>   
+		    <div id="select">
+		       <span class="col">
+		       <select class="cars">
+		       <option value="选择省" selected="selected">选择省</option>
+				<option value="北京市">北京市</option>
+				<option value="上海市">上海市</option>
+				<option value="天津市" >天津市</option>
+				<option value="广州市">广州市</option>
+				</select>
+				</span>
+				<span class="col">
+		       <select class="cars">
+		       <option value="选择市" selected="selected">选择市</option>
+				<option value="北京市">北京市</option>
+				<option value="上海市">上海市</option>
+				<option value="天津市" >天津市</option>
+				<option value="广州市">广州市</option>
+				</select>
+				</span>
+				<span class="col">
+		       <select class="cars">
+		        <option value="选择区" selected="selected">选择市</option>
+				<option value="北京市" selected="selected">北京市</option>
+				<option value="上海市">上海市</option>
+				<option value="天津市" >天津市</option>
+				<option value="广州市">广州市</option>
+				</select>
+				</span>
+		    </div>    
+        </div>
+        <!--<div id="footer">
+            <h5>Copyright &copy;2015 </h5>
+        </div>-->
+    </div>
+</body>
+<script type="text/javascript" src="./script/api.js"></script>
+<script type="text/javascript">
+
+apiready = function(){
+	api.addEventListener({
+       name:'keyback'
+   },function(ret,err){
+   	//coding...
+   });       
+   var header = $api.byId('header');
+   $api.fixIos7Bar(header); 
+   var headerPos = $api.offset(header);       
+   api.openFrame({
+       name: 'map',
+//     url: 'http://yuntu.amap.com/share/MR7rqi',
+       url:'html/search.html',
+       rect:{
+	        x:0,
+	        y:headerPos.h+35,
+	        w:headerPos.w,
+	        h:'auto'
+	    },
+	    showProgress:true
+   });
+};
+function closeme(){
+  var systemType = api.systemType;
+   if(systemType=="android"){
+	  api.closeWidget({
+	     silent:true
+	  });
+	  return;
+	 }
+	 api.closeWidget();
+	 
+}
+function findbykeyword(){
+ var dpname = $api.val($api.byId('dpname'));
+ alert(dpname);
+   api.execScript({
+      frameName: 'map',
+	 script: 'cloudSearch("'+dpname+'");'
+   });
+
+ 
+}
+</script>
+</html>
